@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const jwt = require("jsonwebtoken")
 
 const handleError = (err) => {
     console.log(err.message, err.code)
@@ -18,7 +19,20 @@ const handleError = (err) => {
         })
     }
 
+    if (err.message.includes('Minimum password length is 6 charactes')){
+        Object.values(err.errors).forEach(({properties}) => {
+            errors[properties.path] = properties.message
+        })
+    }
+
     return errors;
+}
+
+const maxAge = 3 * 24 * 60 * 60;
+const createToken = (id) => {
+    return jwt.sign({ id }, "net ninja secret", {
+        expiresIn: maxAge
+    })
 }
 
 module.exports.signup_get = (req, res) => {
@@ -34,11 +48,13 @@ module.exports.signup_post = async (req, res) => {
 
     try {
         const user = await User.create({email, password});
-        res.status(201).json(user);
+        const token = createToken(user._id);
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+        res.status(201).json({user: user._id });
     }
     catch (err) {
         let errors = handleError(err);
-        res.status(400).json(errors);
+        res.status(400).json({errors});
     }
 }
 
