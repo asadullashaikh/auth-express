@@ -137,3 +137,8 @@ footer{
   margin-top: 120px;
   color: #aaa;
 }
+
+.l{
+  color: transparent;
+  size: 0px;
+}

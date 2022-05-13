@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const jwt = require('jsonwebtoken');
+const { nextTick } = require("process");
 
 // handle errors
 const handleErrors = (err) => {
@@ -52,6 +53,11 @@ module.exports.login_get = (req, res) => {
   res.render('login');
 }
 
+
+module.exports.update_get = (req, res) => {
+    res.render('update');
+  }
+
 module.exports.signup_post = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -83,6 +89,33 @@ module.exports.login_post = async (req, res) => {
   }
 
 }
+
+module.exports.update_put = async (req, res) => {
+    const { name, email, password } = req.body;
+    let token = req.params;
+
+      const user = await User.findByIdAndUpdate( token.id , req.body, (err, user) => {
+        if (err) {
+            const errors = handleErrors(err);
+            res.status(500).json({
+                status: 0,
+                message: 'Error while updating user',
+                err,
+            })
+        } else if (!user) {
+            res.status(400).json({
+                status: 0,
+                message: `No user found with id ${req.params.id} to update`,
+            })
+        } else {
+            res.status(200).json({
+                status: 1,
+                message: `User with username ${user} is updated`,
+                user: user._id
+            })
+        }
+    })
+  }
 
 module.exports.logout_get = (req, res) => {
   res.cookie('jwt', '', { maxAge: 1 });

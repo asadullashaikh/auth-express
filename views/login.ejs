@@ -31,9 +31,9 @@
     const password = form.password.value;
 
     try {
-      const res = await fetch('/login', { 
+      const res = await fetch('/update', { 
         method: 'POST', 
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name }),
         headers: {'Content-Type': 'application/json'}
       });
       const data = await res.json();

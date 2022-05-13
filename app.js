@@ -19,6 +19,7 @@ const dbURI = 'mongodb+srv://asad:asad@cluster0.7zja0.mongodb.net/node-auth?retr
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
   .then((result) => app.listen(3000))
   .catch((err) => console.log(err));
+  mongoose.set('useFindAndModify', false);
 
 // routes
 app.get('*', checkUser);
