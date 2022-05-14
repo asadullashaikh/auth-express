@@ -17,7 +17,7 @@ app.set('view engine', 'ejs');
 // database connection
 const dbURI = 'mongodb+srv://asad:asad@cluster0.7zja0.mongodb.net/node-auth?retryWrites=true&w=majority';
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
-  .then((result) => app.listen(3000))
+  .then((result) => app.listen(process.env.PORT || 3000))
   .catch((err) => console.log(err));
   mongoose.set('useFindAndModify', false);
 
