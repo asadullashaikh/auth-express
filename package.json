@@ -1,9 +1,10 @@
 {
-  "name": "node-express-jwt-auth",
+  "name": "node-express-jwt-auth", 
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "engines": {
+  "type": "module",
+  "engines": { 
     "node": "14.x"
   },
   "dependencies": {
